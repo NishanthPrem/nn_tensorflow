@@ -1,9 +1,10 @@
 #%% Importing the libraries
 
 import pandas as pd
-import keras
-import tensorflow as tf
+import tensorflow.keras as keras
+import tensorflow.keras.layers as layers 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 #%% Importing the dataset
 
@@ -17,10 +18,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.2, random_s
 
 #%% Creating the Neural Network
 
-ann = tf.keras.Sequential()
-ann.add(keras.layers.Dense(units=6, activation='relu'))
-ann.add(keras.layers.Dense(units=6, activation='relu'))
-ann.add(keras.layers.Dense(units=1))
+ann = keras.Sequential()
+ann.add(layers.Dense(units=6, activation='relu'))
+ann.add(layers.Dense(units=6, activation='relu'))
+ann.add(layers.Dense(units=1))
 
 #%% Training the ann
 
@@ -30,3 +31,10 @@ ann.fit(X_train, y_train, batch_size=32, epochs=100)
 #%% Prediction
 
 y_pred = ann.predict(X_test)
+y_pred = y_pred.flatten()
+
+#%% Evaluating the model performance
+
+mse = mean_squared_error(y_test, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
